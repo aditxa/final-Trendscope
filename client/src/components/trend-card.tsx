@@ -1,7 +1,7 @@
 import { Trend } from "@shared/schema";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, MessageSquare, Search, ArrowRight, Sparkles } from "lucide-react";
+import { TrendingUp, MessageSquare, Search, ArrowRight, Sparkles, ChefHat } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TrendCardProps {
