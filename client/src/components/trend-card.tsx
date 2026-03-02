@@ -1,15 +1,23 @@
 import { Trend } from "@shared/schema";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, MessageSquare, Search, ArrowRight, Sparkles, ChefHat } from "lucide-react";
+import {
+  TrendingUp,
+  MessageSquare,
+  Search,
+  ArrowRight,
+  Sparkles,
+  ChefHat,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TrendCardProps {
   trend: Trend;
   index: number;
+  onSelect?: () => void;
 }
 
-export function TrendCard({ trend, index }: TrendCardProps) {
+export function TrendCard({ trend, index, onSelect }: TrendCardProps) {
   // Format large numbers
   const formatNumber = (num: number | null) => {
     if (num === null) return "0";
@@ -24,7 +32,10 @@ export function TrendCard({ trend, index }: TrendCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
     >
-      <Card className="group h-full flex flex-col overflow-hidden border border-border/60 hover-elevate bg-card">
+      <Card
+        className="group h-full flex flex-col overflow-hidden border border-border/60 hover-elevate bg-card cursor-pointer"
+        onClick={onSelect}
+      >
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex justify-between items-start mb-4">
             <div className="space-y-1.5">

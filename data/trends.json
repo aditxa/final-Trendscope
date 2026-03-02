@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "name": "Mushroom-Based \"Functional\" Coffee",
+    "description": "Aggressive adoption of Cordyceps and Lion’s Mane infusions into standard filter coffee as Gen Z seeks \"nootropic\" productivity boosts.",
+    "originalDish": "Filter coffee",
+    "socialVolume": 18200,
+    "searchVolume": 64000,
+    "isEmerging": true,
+    "source": "Google Trends · India",
+    "indianAlternative": "Filter coffee decoction, Lion’s Mane powder, jaggery, cardamom",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Tandoori Momos Pasta",
+    "description": "A hyper-regional fusion using Italian pasta shapes as a vehicle for creamy makhani-tandoori momo fillings.",
+    "originalDish": "Pasta",
+    "socialVolume": 12500,
+    "searchVolume": 45000,
+    "isEmerging": true,
+    "source": "Instagram · r/indianfoodphotos",
+    "indianAlternative": "Whole wheat pasta with homemade tandoori masala and steamed momos",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Pistachio-Kunafa Stuffed Medjool Dates",
+    "description": "The \"clean\" evolution of the 2024 Dubai Chocolate trend; focusing on high-fiber dates with the same crunch profile.",
+    "originalDish": "Kunafa",
+    "socialVolume": 9800,
+    "searchVolume": 38100,
+    "isEmerging": true,
+    "source": "Academic Torrents · Reddit Dump 2026-01",
+    "indianAlternative": "Medjool dates, semolina kunafa, pista, coconut sugar",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "name": "Millet-Coconut Frozen Desserts",
+    "description": "Dairy-free, sugar-free ice creams using indigenous Indian grains and jaggery to hit the \"guilt-free\" Gen Z palate.",
+    "originalDish": "Ice cream",
+    "socialVolume": 7600,
+    "searchVolume": 32900,
+    "isEmerging": true,
+    "source": "Foodoscope Tech Analysis",
+    "indianAlternative": "Foxtail millet, coconut milk, nolen gur, roasted dry fruits",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "name": "Desi Taco Fusion (Bajra Roti Base)",
+    "description": "Mexican tacos where the tortilla is replaced by a mini-Bajra or Jowar roti, stuffed with paneer bhurji and mint chutney.",
+    "originalDish": "Tacos",
+    "socialVolume": 14100,
+    "searchVolume": 57900,
+    "isEmerging": true,
+    "source": "TrendScope Market Intelligence Dashboard",
+    "indianAlternative": "Bajra roti, paneer bhurji, pudina chutney",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "name": "Makhani Ramen",
+    "description": "Japanese ramen noodles served in a rich, creamy dal makhani-inspired broth, bridging East Asian and North Indian palates.",
+    "originalDish": "Ramen",
+    "socialVolume": 8900,
+    "searchVolume": 21000,
+    "isEmerging": true,
+    "source": "Reddit · r/delhi & r/mumbai",
+    "indianAlternative": "Rice noodles, rajma/dal makhani gravy, achar oil",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "name": "Ube-Sweet Potato Hybrids",
+    "description": "Using Indian Purple Sweet Potato as a molecularly identical substitute for global \"Ube\" desserts.",
+    "originalDish": "Ube desserts",
+    "socialVolume": 6200,
+    "searchVolume": 27400,
+    "isEmerging": true,
+    "source": "FlavorGraph & Molecular Mapping Research",
+    "indianAlternative": "Purple sweet potato halwa folded into milk cake or shrikhand",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "name": "Probiotic \"Achaar\" Bowls",
+    "description": "Incorporating fermented Indian pickles into Western-style macro bowls as a functional \"gut-health\" topping.",
+    "originalDish": "Macro bowl",
+    "socialVolume": 7100,
+    "searchVolume": 30100,
+    "isEmerging": true,
+    "source": "Digital Epidemiology · Twitter/X Academic API",
+    "indianAlternative": "Brown rice, sprouts, dahi, mixed regional aachaars",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "name": "Kombucha-Chai Cocktails",
+    "description": "A fermented take on traditional tea, blending the \"booch\" fizz with spiced chai aromatics.",
+    "originalDish": "Chai",
+    "socialVolume": 8300,
+    "searchVolume": 35600,
+    "isEmerging": true,
+    "source": "Instaloader · High-Velocity Influencer Metadata",
+    "indianAlternative": "Assam CTC, kombucha starter, jaggery, masala blend",
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  }
+]

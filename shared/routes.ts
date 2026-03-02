@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { insertTrendSchema, trends } from './schema';
+import { z } from "zod";
+import { insertTrendSchema, trends } from "./schema";
 
 export const errorSchemas = {
   validation: z.object({
@@ -17,15 +17,15 @@ export const errorSchemas = {
 export const api = {
   trends: {
     list: {
-      method: 'GET' as const,
-      path: '/api/trends' as const,
+      method: "GET" as const,
+      path: "/api/trends" as const,
       responses: {
         200: z.array(z.custom<typeof trends.$inferSelect>()),
       },
     },
     runPipeline: {
-      method: 'POST' as const,
-      path: '/api/trends/pipeline' as const,
+      method: "POST" as const,
+      path: "/api/trends/pipeline" as const,
       input: z.object({
         source: z.string(),
       }),
@@ -36,17 +36,38 @@ export const api = {
         }),
       },
     },
+    googleInterest: {
+      method: "GET" as const,
+      path: "/api/trends/google-interest" as const,
+      // Query params are encoded into the URL; we validate the response only.
+      responses: {
+        200: z.object({
+          name: z.string(),
+          points: z.array(
+            z.object({
+              date: z.string(),
+              value: z.number(),
+            }),
+          ),
+        }),
+      },
+    },
   },
 };
 
-export function buildUrl(path: string, params?: Record<string, string | number>): string {
+export function buildUrl(
+  path: string,
+  params?: Record<string, string | number>,
+): string {
   let url = path;
   if (params) {
+    const usp = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
-      if (url.includes(`:${key}`)) {
-        url = url.replace(`:${key}`, String(value));
-      }
+      usp.append(key, String(value));
     });
+    if ([...usp.keys()].length > 0) {
+      url += `?${usp.toString()}`;
+    }
   }
   return url;
 }

@@ -1,10 +1,19 @@
+import { useState, useEffect } from "react";
 import { useTrends } from "@/hooks/use-trends";
 import { TrendCard } from "@/components/trend-card";
+import { TrendInterestChart } from "@/components/trend-interest-chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UtensilsCrossed, AlertCircle } from "lucide-react";
 
 export default function Dashboard() {
   const { data: trends, isLoading, error } = useTrends();
+  const [selectedTrendName, setSelectedTrendName] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (!selectedTrendName && trends && Array.isArray(trends) && trends.length > 0) {
+      setSelectedTrendName(trends[0]?.name);
+    }
+  }, [selectedTrendName, trends]);
 
   return (
     <div className="min-h-screen bg-background/50 p-6 md:p-8 lg:p-10">
@@ -19,6 +28,11 @@ export default function Dashboard() {
             Real-time culinary trends detected from high-velocity social forums, validated against global search data.
           </p>
         </div>
+
+        {/* Google Trends Overview */}
+        {!isLoading && !error && trends && Array.isArray(trends) && trends.length > 0 && (
+          <TrendInterestChart name={selectedTrendName ?? trends[0]?.name} />
+        )}
 
         {/* Content Area */}
         {isLoading ? (
@@ -45,7 +59,7 @@ export default function Dashboard() {
               <p className="text-muted-foreground">The API might be unavailable. Please try again later.</p>
             </div>
           </div>
-        ) : !trends || trends.length === 0 ? (
+        ) : !trends || !Array.isArray(trends) || trends.length === 0 ? (
           <div className="rounded-2xl border border-border/50 bg-card p-16 flex flex-col items-center justify-center text-center space-y-4">
             <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-2">
               <UtensilsCrossed className="w-8 h-8 text-muted-foreground/50" />
@@ -58,7 +72,12 @@ export default function Dashboard() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
             {trends.map((trend, index) => (
-              <TrendCard key={trend.id} trend={trend} index={index} />
+              <TrendCard
+                key={trend.id}
+                trend={trend}
+                index={index}
+                onSelect={() => setSelectedTrendName(trend.name)}
+              />
             ))}
           </div>
         )}

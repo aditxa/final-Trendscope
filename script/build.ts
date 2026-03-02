@@ -32,6 +32,7 @@ const allowlist = [
   "zod-validation-error",
 ];
 
+
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
 

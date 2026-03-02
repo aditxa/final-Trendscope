@@ -1,14 +1,20 @@
+import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as schema from "@shared/schema";
 
 const { Pool } = pg;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
+/**
+ * In a full Postgres setup, DATABASE_URL should be defined and we construct
+ * a real Pool + Drizzle client. If it's missing, we gracefully degrade to
+ * `null` so higher layers can fall back to file-based storage.
+ */
+export const pool =
+  process.env.DATABASE_URL != null
+    ? new Pool({ connectionString: process.env.DATABASE_URL })
+    : null;
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle(pool, { schema });
+// `db` is typed as `any` so callers can compile even when it's null at runtime.
+export const db: any =
+  pool != null ? drizzle(pool, { schema }) : null;
