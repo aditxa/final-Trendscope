@@ -120,6 +120,7 @@ export default function Pipeline() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="reddit">Reddit Subforums</SelectItem>
+                        <SelectItem value="gdelt">GDELT News Articles</SelectItem>
                         <SelectItem value="discord">Discord Communities</SelectItem>
                         <SelectItem value="twitter">X (Twitter) Firehose</SelectItem>
                       </SelectContent>

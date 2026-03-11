@@ -3,7 +3,8 @@ import {
   BarChart3, 
   ChefHat, 
   Database, 
-  Globe
+  Globe,
+  Newspaper
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import {
@@ -96,6 +97,13 @@ export function AppSidebar() {
                 <div className="flex items-center gap-2">
                   <Globe size={14} />
                   <span>Google Trends</span>
+                </div>
+                <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Newspaper size={14} />
+                  <span>GDELT News</span>
                 </div>
                 <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </div>

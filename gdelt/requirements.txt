@@ -1,0 +1,6 @@
+requests>=2.32.0
+python-dateutil>=2.9.0
+tenacity>=8.3.0
+spacy>=3.8,<3.9; python_version < '3.14'
+spacy-lookups-data>=1.0.5; python_version < '3.14'
+pytest>=8.0.0

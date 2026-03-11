@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { ingestRedditTrendsFromFiles } from "./pipelines/reddit";
+import { ingestGdeltMockTrends } from "./pipelines/gdelt";
 import type { InsertTrend } from "@shared/schema";
 
 const CURATED_TRENDS: InsertTrend[] = [
@@ -110,6 +111,42 @@ const CURATED_TRENDS: InsertTrend[] = [
     source: "Instagram Reels · mixology accounts",
     indianAlternative: "Assam CTC, kombucha starter, jaggery, masala blend",
   },
+  {
+    name: "Doctor's Ultimate Bread",
+    originalDish: "Bread",
+    description:
+      "A high-protein bread recipe going viral for packing 10g protein per slice using nutrient-dense flour blends, positioned as the ultimate health-conscious carb.",
+    socialVolume: 9400,
+    searchVolume: 33200,
+    isEmerging: true,
+    source: "GDELT News Trend Pipeline",
+    indianAlternative:
+      "Ragi-multigrain atta bread with flaxseed, peanut flour, and jaggery glaze",
+  },
+  {
+    name: "Japanese Cheesecake",
+    originalDish: "Cheesecake",
+    description:
+      "A massively viral 2-ingredient Japanese cheesecake taking over TikTok — jiggly, cloud-light, and requiring only cream cheese and eggs.",
+    socialVolume: 22500,
+    searchVolume: 71000,
+    isEmerging: true,
+    source: "GDELT News Trend Pipeline",
+    indianAlternative:
+      "Hung curd cheesecake with cardamom, saffron, and a digestive biscuit base",
+  },
+  {
+    name: "Paratha Burger",
+    originalDish: "Burger",
+    description:
+      "A fusion trend replacing the classic burger bun with crispy, flaky paratha — delivering buttery layers with every bite of the patty.",
+    socialVolume: 11300,
+    searchVolume: 42500,
+    isEmerging: true,
+    source: "GDELT News Trend Pipeline",
+    indianAlternative:
+      "Laccha paratha bun, spiced paneer or keema patty, mint raita, pickled onions",
+  },
 ];
 
 // Seed function to insert initial curated data
@@ -163,6 +200,14 @@ export async function registerRoutes(
         ],
         'Probiotic "Achaar" Bowls': [10, 18, 26, 34, 43, 51, 58, 64],
         "Kombucha-Chai Cocktails": [16, 24, 33, 42, 50, 57, 63, 69],
+        "Doctor's Ultimate Bread": [8, 15, 24, 38, 52, 64, 73, 80],
+        "Japanese Cheesecake": [5, 12, 20, 34, 55, 72, 85, 95],
+        "Paratha Burger": [10, 18, 28, 40, 53, 62, 70, 76],
+        "Smash Burger Tacos": [6, 14, 25, 42, 60, 74, 82, 90],
+        "Cottage Cheese Ice Cream": [12, 20, 32, 45, 56, 64, 71, 78],
+        "Dubai Chocolate Bar": [8, 18, 35, 55, 70, 82, 90, 96],
+        "Birria Ramen": [15, 24, 34, 46, 55, 62, 68, 73],
+        "Protein Cookie Dough": [4, 10, 18, 28, 40, 50, 58, 65],
       };
 
       const dates = [
@@ -208,6 +253,24 @@ export async function registerRoutes(
         } catch (pipelineError) {
           console.error(
             "Reddit ingestion failed, falling back to synthetic data:",
+            pipelineError,
+          );
+        }
+      }
+
+      if (input.source.toLowerCase() === "gdelt") {
+        try {
+          const newTrends = await ingestGdeltMockTrends();
+
+          if (newTrends.length > 0) {
+            return res.status(200).json({
+              message: `GDELT pipeline completed successfully. Discovered ${newTrends.length} trend(s) from global news articles.`,
+              newTrends,
+            });
+          }
+        } catch (pipelineError) {
+          console.error(
+            "GDELT ingestion failed, falling back to synthetic data:",
             pipelineError,
           );
         }

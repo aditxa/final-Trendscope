@@ -9,7 +9,7 @@
     "isEmerging": true,
     "source": "Google Trends · India",
     "indianAlternative": "Filter coffee decoction, Lion’s Mane powder, jaggery, cardamom",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:06.515Z"
   },
   {
     "id": 2,
@@ -21,43 +21,43 @@
     "isEmerging": true,
     "source": "Instagram · r/indianfoodphotos",
     "indianAlternative": "Whole wheat pasta with homemade tandoori masala and steamed momos",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:06.533Z"
   },
   {
     "id": 3,
     "name": "Pistachio-Kunafa Stuffed Medjool Dates",
-    "description": "The \"clean\" evolution of the 2024 Dubai Chocolate trend; focusing on high-fiber dates with the same crunch profile.",
+    "description": "The \"clean\" evolution of the Dubai chocolate trend: Medjool dates stuffed with kunafa shards, pistachio and white chocolate.",
     "originalDish": "Kunafa",
     "socialVolume": 9800,
     "searchVolume": 38100,
     "isEmerging": true,
-    "source": "Academic Torrents · Reddit Dump 2026-01",
+    "source": "Reddit Dump · 2026-01",
     "indianAlternative": "Medjool dates, semolina kunafa, pista, coconut sugar",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:06.549Z"
   },
   {
     "id": 4,
     "name": "Millet-Coconut Frozen Desserts",
-    "description": "Dairy-free, sugar-free ice creams using indigenous Indian grains and jaggery to hit the \"guilt-free\" Gen Z palate.",
+    "description": "Dairy-free, low-sugar frozen desserts using indigenous millets, coconut cream and jaggery targeting the \"guilt-free\" Gen Z palate.",
     "originalDish": "Ice cream",
     "socialVolume": 7600,
     "searchVolume": 32900,
     "isEmerging": true,
     "source": "Foodoscope Tech Analysis",
     "indianAlternative": "Foxtail millet, coconut milk, nolen gur, roasted dry fruits",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.375Z"
   },
   {
     "id": 5,
     "name": "Desi Taco Fusion (Bajra Roti Base)",
-    "description": "Mexican tacos where the tortilla is replaced by a mini-Bajra or Jowar roti, stuffed with paneer bhurji and mint chutney.",
+    "description": "Mexican tacos where the tortilla is replaced by mini Bajra or Jowar rotis, stuffed with paneer bhurji and mint chutney.",
     "originalDish": "Tacos",
     "socialVolume": 14100,
     "searchVolume": 57900,
     "isEmerging": true,
-    "source": "TrendScope Market Intelligence Dashboard",
+    "source": "TrendScope Dashboard",
     "indianAlternative": "Bajra roti, paneer bhurji, pudina chutney",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.379Z"
   },
   {
     "id": 6,
@@ -67,44 +67,140 @@
     "socialVolume": 8900,
     "searchVolume": 21000,
     "isEmerging": true,
-    "source": "Reddit · r/delhi & r/mumbai",
+    "source": "Reddit · r/delhi, r/mumbai",
     "indianAlternative": "Rice noodles, rajma/dal makhani gravy, achar oil",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.382Z"
   },
   {
     "id": 7,
-    "name": "Ube-Sweet Potato Hybrids",
-    "description": "Using Indian Purple Sweet Potato as a molecularly identical substitute for global \"Ube\" desserts.",
+    "name": "Ube-Style Purple Sweet Potato Desserts",
+    "description": "Using Indian purple sweet potato as a near-molecular substitute for global \"ube\" in cheesecakes, soft-serve and milk cakes.",
     "originalDish": "Ube desserts",
     "socialVolume": 6200,
     "searchVolume": 27400,
     "isEmerging": true,
-    "source": "FlavorGraph & Molecular Mapping Research",
+    "source": "FlavorGraph & molecular mapping",
     "indianAlternative": "Purple sweet potato halwa folded into milk cake or shrikhand",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.385Z"
   },
   {
     "id": 8,
     "name": "Probiotic \"Achaar\" Bowls",
-    "description": "Incorporating fermented Indian pickles into Western-style macro bowls as a functional \"gut-health\" topping.",
+    "description": "Western-style macro bowls that use fermented Indian pickles as a functional gut-health topping instead of kimchi.",
     "originalDish": "Macro bowl",
     "socialVolume": 7100,
     "searchVolume": 30100,
     "isEmerging": true,
-    "source": "Digital Epidemiology · Twitter/X Academic API",
+    "source": "Twitter/X · academic panels",
     "indianAlternative": "Brown rice, sprouts, dahi, mixed regional aachaars",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.390Z"
   },
   {
     "id": 9,
     "name": "Kombucha-Chai Cocktails",
-    "description": "A fermented take on traditional tea, blending the \"booch\" fizz with spiced chai aromatics.",
+    "description": "A fermented take on chai, blending kombucha fizz with masala chai aromatics in low-ABV cocktail formats.",
     "originalDish": "Chai",
     "socialVolume": 8300,
     "searchVolume": 35600,
     "isEmerging": true,
-    "source": "Instaloader · High-Velocity Influencer Metadata",
+    "source": "Instagram Reels · mixology accounts",
     "indianAlternative": "Assam CTC, kombucha starter, jaggery, masala blend",
-    "createdAt": "2026-02-01T00:00:00.000Z"
+    "createdAt": "2026-03-11T01:03:07.394Z"
+  },
+  {
+    "id": 10,
+    "name": "Doctor's Ultimate Bread",
+    "description": "A high-protein bread recipe going viral for packing 10g protein per slice using nutrient-dense flour blends, positioned as the ultimate health-conscious carb.",
+    "originalDish": "Bread",
+    "socialVolume": 9400,
+    "searchVolume": 33200,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Ragi-multigrain atta bread with flaxseed, peanut flour, and jaggery glaze",
+    "createdAt": "2026-03-11T01:03:07.400Z"
+  },
+  {
+    "id": 11,
+    "name": "Japanese Cheesecake",
+    "description": "A massively viral 2-ingredient Japanese cheesecake taking over TikTok — jiggly, cloud-light, and requiring only cream cheese and eggs.",
+    "originalDish": "Cheesecake",
+    "socialVolume": 22500,
+    "searchVolume": 71000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Hung curd cheesecake with cardamom, saffron, and a digestive biscuit base",
+    "createdAt": "2026-03-11T01:03:07.405Z"
+  },
+  {
+    "id": 12,
+    "name": "Paratha Burger",
+    "description": "A fusion trend replacing the classic burger bun with crispy, flaky paratha — delivering buttery layers with every bite of the patty.",
+    "originalDish": "Burger",
+    "socialVolume": 11300,
+    "searchVolume": 42500,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Laccha paratha bun, spiced paneer or keema patty, mint raita, pickled onions",
+    "createdAt": "2026-03-11T01:03:07.409Z"
+  },
+  {
+    "id": 13,
+    "name": "Smash Burger Tacos",
+    "description": "A viral mashup that presses seasoned ground beef into a tortilla on a flat griddle, creating a crispy cheese-skirted taco that dominated GDELT news volume in February 2026.",
+    "originalDish": "Tacos",
+    "socialVolume": 19400,
+    "searchVolume": 68000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Chapati smash taco with keema, amul cheese crust, and green chutney",
+    "createdAt": "2026-03-11T01:53:17.243Z"
+  },
+  {
+    "id": 14,
+    "name": "Cottage Cheese Ice Cream",
+    "description": "High-protein frozen dessert blending cottage cheese, frozen fruit and honey — championed by fitness creators and picked up by mainstream food media worldwide.",
+    "originalDish": "Ice cream",
+    "socialVolume": 15800,
+    "searchVolume": 54200,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Paneer-based frozen kulfi with cardamom, saffron, and roasted pistachios",
+    "createdAt": "2026-03-11T01:53:17.247Z"
+  },
+  {
+    "id": 15,
+    "name": "Dubai Chocolate Bar",
+    "description": "Pistachio-kunafa stuffed chocolate bars originating from a Dubai confectioner that went globally viral, spawning hundreds of copycat recipes across news outlets.",
+    "originalDish": "Chocolate bar",
+    "socialVolume": 31200,
+    "searchVolume": 92000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Kaju katli chocolate bark with crushed kunafa, pista, and desi ghee",
+    "createdAt": "2026-03-11T01:53:17.250Z"
+  },
+  {
+    "id": 16,
+    "name": "Birria Ramen",
+    "description": "Mexican birria consommé replaces traditional tonkotsu broth in ramen bowls — a cross-cultural fusion surging through food-media headlines.",
+    "originalDish": "Ramen",
+    "socialVolume": 13600,
+    "searchVolume": 47500,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Nihari-style slow-cooked mutton broth ramen with hand-pulled noodles and mirchi oil",
+    "createdAt": "2026-03-11T01:53:17.254Z"
+  },
+  {
+    "id": 17,
+    "name": "Protein Cookie Dough",
+    "description": "Edible, no-bake cookie dough fortified with protein powder and chickpea flour — a gym-culture staple that crossed into mainstream news coverage.",
+    "originalDish": "Cookie dough",
+    "socialVolume": 10200,
+    "searchVolume": 38900,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Besan-jaggery protein ladoo dough with whey, dark chocolate chips, and ghee",
+    "createdAt": "2026-03-11T01:53:17.259Z"
   }
 ]
