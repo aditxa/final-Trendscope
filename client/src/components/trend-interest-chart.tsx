@@ -15,6 +15,7 @@ interface TrendInterestChartProps {
 
 export function TrendInterestChart({ name }: TrendInterestChartProps) {
   const { data, isLoading, error } = useTrendInterest(name);
+  const chartData = data as any;
 
   return (
     <Card className="border border-border/60 bg-card p-5 md:p-6">
@@ -24,7 +25,7 @@ export function TrendInterestChart({ name }: TrendInterestChartProps) {
             Google Search Interest · IN
           </p>
           <h2 className="font-display text-lg md:text-xl font-semibold text-foreground mt-1">
-            {data?.name ?? name ?? "Loading trend"}
+            {chartData?.name ?? name ?? "Loading trend"}
           </h2>
         </div>
         <span className="text-[11px] text-muted-foreground/80">
@@ -43,7 +44,7 @@ export function TrendInterestChart({ name }: TrendInterestChartProps) {
       ) : (
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data.points}>
+            <AreaChart data={chartData?.points || []}>
               <defs>
                 <linearGradient id="trendInterest" x1="0" y1="0" x2="0" y2="1">
                   <stop

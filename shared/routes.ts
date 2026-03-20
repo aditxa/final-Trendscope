@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { insertTrendSchema, trends } from "./schema";
+import { insertTrendSchema, trends, recipes } from "./schema";
 
 export const errorSchemas = {
   validation: z.object({
@@ -47,9 +47,16 @@ export const api = {
             z.object({
               date: z.string(),
               value: z.number(),
-            }),
+            })
           ),
         }),
+      },
+    },
+    getRecipe: {
+      method: "GET" as const,
+      path: "/api/trends/:id/recipe" as const,
+      responses: {
+        200: z.custom<typeof recipes.$inferSelect>(),
       },
     },
   },
@@ -65,7 +72,7 @@ export function buildUrl(
     Object.entries(params).forEach(([key, value]) => {
       usp.append(key, String(value));
     });
-    if ([...usp.keys()].length > 0) {
+    if (Array.from(usp.keys()).length > 0) {
       url += `?${usp.toString()}`;
     }
   }

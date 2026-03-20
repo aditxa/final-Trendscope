@@ -6,6 +6,7 @@ import { z } from "zod";
 import { ingestRedditTrendsFromFiles } from "./pipelines/reddit";
 import { ingestGdeltMockTrends } from "./pipelines/gdelt";
 import type { InsertTrend } from "@shared/schema";
+import { generateRecipe } from "./services/gemini";
 
 const CURATED_TRENDS: InsertTrend[] = [
   {
@@ -172,6 +173,38 @@ export async function registerRoutes(
       res.json(allTrends);
     } catch (err) {
       res.status(500).json({ message: "Failed to fetch trends" });
+    }
+  });
+
+  app.get("/api/trends/:id/recipe", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid ID format" });
+
+      const trend = await storage.getTrend(id);
+      if (!trend) return res.status(404).json({ message: "Trend not found" });
+
+      const existingRecipe = await storage.getRecipe(id);
+      if (existingRecipe) {
+        return res.json(existingRecipe);
+      }
+
+      const recipeData = await generateRecipe(
+        trend.name,
+        trend.description,
+        trend.indianAlternative || ""
+      );
+
+      const newRecipe = await storage.createRecipe({
+        trendId: id,
+        ingredients: recipeData.ingredients,
+        steps: recipeData.steps,
+      });
+
+      res.status(200).json(newRecipe);
+    } catch (err) {
+      console.error("Recipe route error:", err);
+      res.status(500).json({ message: "Failed to generate AI recipe" });
     }
   });
 

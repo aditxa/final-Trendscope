@@ -1,0 +1,5 @@
+﻿client/src/components/trend-interest-chart.tsx(27,20): error TS2339: Property 'name' does not exist on type '{}'.
+client/src/components/trend-interest-chart.tsx(46,35): error TS2339: Property 'points' does not exist on type '{}'.
+client/src/pages/dashboard.tsx(26,9): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+client/src/pages/pipeline.tsx(66,24): error TS18046: 'data' is of type 'unknown'.
+client/src/pages/pipeline.tsx(66,54): error TS18046: 'data' is of type 'unknown'.

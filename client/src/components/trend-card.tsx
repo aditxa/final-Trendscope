@@ -15,9 +15,10 @@ interface TrendCardProps {
   trend: Trend;
   index: number;
   onSelect?: () => void;
+  onViewRecipe?: (id: number) => void;
 }
 
-export function TrendCard({ trend, index, onSelect }: TrendCardProps) {
+export function TrendCard({ trend, index, onSelect, onViewRecipe }: TrendCardProps) {
   // Format large numbers
   const formatNumber = (num: number | null) => {
     if (num === null) return "0";
@@ -33,7 +34,7 @@ export function TrendCard({ trend, index, onSelect }: TrendCardProps) {
       transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
     >
       <Card
-        className="group h-full flex flex-col overflow-hidden border border-border/60 hover-elevate bg-card cursor-pointer"
+        className="group h-full flex flex-col overflow-hidden border border-border/60 hover-elevate bg-card"
         onClick={onSelect}
       >
         <div className="p-6 flex-1 flex flex-col">
@@ -87,9 +88,11 @@ export function TrendCard({ trend, index, onSelect }: TrendCardProps) {
             <Sparkles size={64} />
           </div>
           <div className="relative z-10 flex flex-col gap-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary/70">
-              <ChefHat size={14} />
-              <span>Foodoscope Suggestion</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary/70">
+                <ChefHat size={14} />
+                <span>Foodoscope Suggestion</span>
+              </div>
             </div>
             <div className="flex items-start gap-2">
               <ArrowRight size={16} className="text-primary/40 mt-1 shrink-0" />
@@ -100,6 +103,18 @@ export function TrendCard({ trend, index, onSelect }: TrendCardProps) {
                   <span className="text-muted-foreground italic">Analyzing alternatives...</span>
                 )}
               </p>
+            </div>
+            <div className="mt-4 pt-4 border-t border-border/50 flex justify-end">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewRecipe?.(trend.id);
+                }}
+                className="text-sm font-semibold bg-foreground text-background px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-foreground/90 transition-all shadow-md active:scale-95 group/btn"
+              >
+                <Sparkles size={16} className="text-amber-300 group-hover/btn:animate-pulse" />
+                Recipe
+              </button>
             </div>
           </div>
         </div>

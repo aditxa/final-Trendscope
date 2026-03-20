@@ -60,10 +60,10 @@ export default function Pipeline() {
 
   const handleRunPipeline = () => {
     mutate({ source }, {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         toast({
           title: "Pipeline Completed Successfully",
-          description: data.message || `Discovered ${data.newTrends.length} new trends.`,
+          description: data.message || `Discovered ${data.newTrends?.length || 0} new trends.`,
           variant: "default",
         });
       },

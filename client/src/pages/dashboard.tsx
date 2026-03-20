@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { useTrends } from "@/hooks/use-trends";
 import { TrendCard } from "@/components/trend-card";
 import { TrendInterestChart } from "@/components/trend-interest-chart";
+import { RecipeModal } from "@/components/recipe-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UtensilsCrossed, AlertCircle } from "lucide-react";
+import { Trend } from "@shared/schema";
 
 export default function Dashboard() {
-  const { data: trends, isLoading, error } = useTrends();
+  const { data: rawTrends, isLoading, error } = useTrends();
+  const trends = rawTrends as Trend[] | undefined;
   const [selectedTrendName, setSelectedTrendName] = useState<string | undefined>(undefined);
+  const [recipeModalTrend, setRecipeModalTrend] = useState<Trend | null>(null);
 
   useEffect(() => {
     if (!selectedTrendName && trends && Array.isArray(trends) && trends.length > 0) {
@@ -77,11 +81,17 @@ export default function Dashboard() {
                 trend={trend}
                 index={index}
                 onSelect={() => setSelectedTrendName(trend.name)}
+                onViewRecipe={(id) => setRecipeModalTrend(trends.find(t => t.id === id) || null)}
               />
             ))}
           </div>
         )}
 
+        <RecipeModal 
+          trend={recipeModalTrend} 
+          isOpen={!!recipeModalTrend} 
+          onClose={() => setRecipeModalTrend(null)} 
+        />
       </div>
     </div>
   );
