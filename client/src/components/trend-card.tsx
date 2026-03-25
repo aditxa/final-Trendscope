@@ -38,26 +38,27 @@ export function TrendCard({ trend, index, onSelect, onViewRecipe }: TrendCardPro
         onClick={onSelect}
       >
         <div className="p-6 flex-1 flex flex-col">
-          <div className="flex justify-between items-start mb-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-display font-bold text-xl leading-tight text-foreground">
-                  {trend.name}
-                </h3>
-                {trend.isEmerging && (
-                  <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 border-emerald-200/50 flex items-center gap-1 hover:bg-emerald-100 transition-colors">
-                    <TrendingUp size={12} className="stroke-[2.5]" />
-                    <span>Emerging</span>
-                  </Badge>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground/80 font-medium">
+          <div className="mb-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground bg-muted/30 min-h-5 px-2 py-0.5 flex items-center shrink">
+                <span className="truncate max-w-[140px] sm:max-w-[200px]">{trend.source}</span>
+              </Badge>
+              {trend.isEmerging && (
+                <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 border-emerald-200/50 flex items-center gap-1 hover:bg-emerald-100 transition-colors shrink-0 text-[10px] min-h-5 px-2 py-0.5">
+                  <TrendingUp size={12} className="stroke-[2.5]" />
+                  <span>Emerging</span>
+                </Badge>
+              )}
+            </div>
+            
+            <div>
+              <h3 className="font-display font-extrabold text-2xl leading-tight text-foreground">
+                {trend.name}
+              </h3>
+              <p className="text-sm text-muted-foreground/80 font-medium mt-1">
                 Originated as: <span className="text-foreground/80">{trend.originalDish || 'Unknown'}</span>
               </p>
             </div>
-            <Badge variant="outline" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground bg-muted/30">
-              {trend.source}
-            </Badge>
           </div>
 
           <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-3 flex-1">
