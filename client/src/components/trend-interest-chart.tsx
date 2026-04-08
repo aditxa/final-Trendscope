@@ -17,6 +17,15 @@ export function TrendInterestChart({ name }: TrendInterestChartProps) {
   const { data, isLoading, error } = useTrendInterest(name);
   const chartData = data as any;
 
+  // Compute dynamic date range label from actual data points
+  const dateRangeLabel = (() => {
+    const points = chartData?.points;
+    if (!points || points.length === 0) return "Last 3 months · indexed 0–100";
+    const first = points[0].date;
+    const last = points[points.length - 1].date;
+    return `${first} – ${last} · indexed 0–100`;
+  })();
+
   return (
     <Card className="border border-border/60 bg-card p-5 md:p-6">
       <div className="flex items-center justify-between mb-3">
@@ -29,7 +38,7 @@ export function TrendInterestChart({ name }: TrendInterestChartProps) {
           </h2>
         </div>
         <span className="text-[11px] text-muted-foreground/80">
-          Jan–Feb 2026 · indexed 0–100
+          {dateRangeLabel}
         </span>
       </div>
 

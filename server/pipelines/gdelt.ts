@@ -1,101 +1,109 @@
-/**
- * Mock GDELT news-trend pipeline.
- *
- * In a real deployment, this would shell out to the Python `gdelt/` package
- * (e.g. `python -m gdelt.src.main detect …`) and read the resulting trends
- * table.  For the MVP dashboard, we return a curated set of food trends that
- * mirror what the real pipeline would surface from GDELT DOC 2.0 articles.
- */
-
 import { storage } from "../storage";
 import type { InsertTrend, Trend } from "@shared/schema";
+import { exec } from "child_process";
+import { promisify } from "util";
+import path from "path";
+import fs from "fs/promises";
+import { enrichTrend } from "../services/gemini";
 
-const GDELT_MOCK_TRENDS: InsertTrend[] = [
-  {
-    name: "Smash Burger Tacos",
-    originalDish: "Tacos",
-    description:
-      "A viral mashup that presses seasoned ground beef into a tortilla on a flat griddle, creating a crispy cheese-skirted taco that dominated GDELT news volume in February 2026.",
-    socialVolume: 19400,
-    searchVolume: 68000,
-    isEmerging: true,
-    source: "GDELT News Trend Pipeline",
-    indianAlternative:
-      "Chapati smash taco with keema, amul cheese crust, and green chutney",
-  },
-  {
-    name: "Cottage Cheese Ice Cream",
-    originalDish: "Ice cream",
-    description:
-      "High-protein frozen dessert blending cottage cheese, frozen fruit and honey — championed by fitness creators and picked up by mainstream food media worldwide.",
-    socialVolume: 15800,
-    searchVolume: 54200,
-    isEmerging: true,
-    source: "GDELT News Trend Pipeline",
-    indianAlternative:
-      "Paneer-based frozen kulfi with cardamom, saffron, and roasted pistachios",
-  },
-  {
-    name: "Dubai Chocolate Bar",
-    originalDish: "Chocolate bar",
-    description:
-      "Pistachio-kunafa stuffed chocolate bars originating from a Dubai confectioner that went globally viral, spawning hundreds of copycat recipes across news outlets.",
-    socialVolume: 31200,
-    searchVolume: 92000,
-    isEmerging: true,
-    source: "GDELT News Trend Pipeline",
-    indianAlternative:
-      "Kaju katli chocolate bark with crushed kunafa, pista, and desi ghee",
-  },
-  {
-    name: "Birria Ramen",
-    originalDish: "Ramen",
-    description:
-      "Mexican birria consommé replaces traditional tonkotsu broth in ramen bowls — a cross-cultural fusion surging through food-media headlines.",
-    socialVolume: 13600,
-    searchVolume: 47500,
-    isEmerging: true,
-    source: "GDELT News Trend Pipeline",
-    indianAlternative:
-      "Nihari-style slow-cooked mutton broth ramen with hand-pulled noodles and mirchi oil",
-  },
-  {
-    name: "Protein Cookie Dough",
-    originalDish: "Cookie dough",
-    description:
-      "Edible, no-bake cookie dough fortified with protein powder and chickpea flour — a gym-culture staple that crossed into mainstream news coverage.",
-    socialVolume: 10200,
-    searchVolume: 38900,
-    isEmerging: true,
-    source: "GDELT News Trend Pipeline",
-    indianAlternative:
-      "Besan-jaggery protein ladoo dough with whey, dark chocolate chips, and ghee",
-  },
-];
+const execAsync = promisify(exec);
 
-/**
- * Simulate running the GDELT pipeline and return newly created trends.
- *
- * De-duplicates against existing trends by name to avoid double-inserts on
- * repeated pipeline runs.
- */
-export async function ingestGdeltMockTrends(): Promise<Trend[]> {
+export async function ingestGdeltMockTrends(onProgress?: (step: number) => void): Promise<Trend[]> {
+  console.log("[GDELT Pipeline] Starting true python ML execution (this takes ~30-60s)...");
+  
+  // Use the venv python if available, otherwise fallback to system python
+  const venvPython = path.join(process.cwd(), "gdelt", ".venv", "Scripts", "python.exe");
+  const fallbackPython = "python";
+  
+  let pythonCmd = fallbackPython;
+  try {
+    await fs.access(venvPython);
+    pythonCmd = venvPython;
+  } catch {
+    console.log("[GDELT Pipeline] Local venv not found, using global python.");
+  }
+
+  const mainModule = "gdelt.src.main";
+  const exportPath = path.join(process.cwd(), "data", "gdelt_export.json");
+
+  // Step 0: Scraping Social Data
+  onProgress?.(0);
+  console.log(`[GDELT Pipeline] Executing: run_once`);
+  try {
+    await execAsync(`"${pythonCmd}" -m ${mainModule} run_once --minutes 1440`, { cwd: process.cwd(), maxBuffer: 1024 * 1024 * 10 });
+  } catch (e) {
+    console.error(`[GDELT Pipeline Error on cmd: run_once]`, e);
+  }
+
+  // Step 1: Running NLP Trend Detection
+  onProgress?.(1);
+  const nlpCmds = [
+    `"${pythonCmd}" -m ${mainModule} build_counts --bucket daily`,
+    `"${pythonCmd}" -m ${mainModule} detect --bucket daily --current-window-hours 24 --baseline-days 0 --min-baseline-samples 0 --top-k 5`,
+    `"${pythonCmd}" -m ${mainModule} export --format json --output "${exportPath}" --top-k 5`,
+  ];
+  for (const cmd of nlpCmds) {
+    console.log(`[GDELT Pipeline] Executing: ${cmd}`);
+    try {
+      await execAsync(cmd, { cwd: process.cwd(), maxBuffer: 1024 * 1024 * 10 });
+    } catch (e) {
+      console.error(`[GDELT Pipeline Error on cmd: ${cmd}]`, e);
+    }
+  }
+
+  // Read results
+  let parsed: any[] = [];
+  try {
+    const rawData = await fs.readFile(exportPath, "utf-8");
+    parsed = JSON.parse(rawData);
+  } catch (err) {
+    console.warn("[GDELT Pipeline] Failed to read export JSON. Likely no trends found.", err);
+    return [];
+  }
+
+  if (!Array.isArray(parsed) || parsed.length === 0) {
+    console.log("[GDELT Pipeline] No trends extracted in this window.");
+    return [];
+  }
+
+  // Step 2: Validating and Enriching
+  onProgress?.(2);
   const existing = await storage.getTrends();
-  const existingNames = new Set(existing.map((t) => t.name));
+  const existingNames = new Set(existing.map((t) => t.name.toLowerCase()));
 
   const newTrends: Trend[] = [];
 
-  for (const mock of GDELT_MOCK_TRENDS) {
-    if (existingNames.has(mock.name)) {
-      // Already exists — return the existing record.
-      const found = existing.find((t) => t.name === mock.name);
-      if (found) newTrends.push(found);
+  for (const rawTrend of parsed) {
+    const phrase: string = rawTrend.phrase;
+    const currentCount: number = rawTrend.current_count;
+
+    if (!phrase || existingNames.has(phrase.toLowerCase())) {
+      console.log(`[GDELT Pipeline] Skipping duplicate: ${phrase}`);
       continue;
     }
 
-    const created = await storage.createTrend(mock);
+    console.log(`[GDELT Pipeline] Calling Gemini to enrich phrase: ${phrase}`);
+    const enrichment = await enrichTrend(phrase);
+
+    // Capitalize properly
+    const finalName = phrase.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+    const insertPayload: InsertTrend = {
+      name: finalName,
+      originalDish: enrichment.originalDish,
+      description: enrichment.description,
+      socialVolume: currentCount,
+      searchVolume: Math.floor(Math.random() * 50000) + 10000, // Still randomized since google-trends runs live on click
+      isEmerging: true,
+      source: "GDELT News ML Pipeline",
+      indianAlternative: enrichment.indianAlternative,
+    };
+
+    const created = await storage.createTrend(insertPayload);
     newTrends.push(created);
+    existingNames.add(phrase.toLowerCase());
   }
 
+  console.log(`[GDELT Pipeline] Complete. Added ${newTrends.length} new items.`);
   return newTrends;
 }

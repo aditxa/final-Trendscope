@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { db } from "./db";
 import { trends, recipes, type InsertTrend, type Trend, type InsertRecipe, type Recipe } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   getTrends(): Promise<Trend[]>;
@@ -15,7 +15,7 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getTrends(): Promise<Trend[]> {
-    return await db.select().from(trends);
+    return await db.select().from(trends).orderBy(desc(trends.id));
   }
 
   async getTrend(id: number): Promise<Trend | undefined> {
@@ -87,7 +87,8 @@ export class FileStorage implements IStorage {
   }
 
   async getTrends(): Promise<Trend[]> {
-    return await this.readAll();
+    const all = await this.readAll();
+    return all.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
   }
 
   async getTrend(id: number): Promise<Trend | undefined> {

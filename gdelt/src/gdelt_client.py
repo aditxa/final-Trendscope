@@ -17,10 +17,10 @@ class GdeltConfig:
     language: str = "English"
     source_country: Optional[str] = None
     max_records: int = 250
-    timeout_seconds: int = 20
+    timeout_seconds: int = 60
     max_retries: int = 5
     backoff_base_seconds: float = 1.0
-    rate_limit_seconds: float = 5.0
+    rate_limit_seconds: float = 15.0
     min_window_seconds: int = 900
 
 

@@ -202,5 +202,77 @@
     "source": "GDELT News Trend Pipeline",
     "indianAlternative": "Besan-jaggery protein ladoo dough with whey, dark chocolate chips, and ghee",
     "createdAt": "2026-03-11T01:53:17.259Z"
+  },
+  {
+    "id": 18,
+    "name": "Matcha Tiramisu",
+    "description": "A viral twist on the classic Italian dessert replacing espresso with ceremonial grade matcha, heavily featured across culinary news in March 2026.",
+    "originalDish": "Tiramisu",
+    "socialVolume": 24500,
+    "searchVolume": 81000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Pista and cardamom infused rasmalai 'tiramisu' layered with soaked rusk",
+    "createdAt": "2026-04-07T23:24:37.941Z"
+  },
+  {
+    "id": 19,
+    "name": "Cloud Bread Pizza",
+    "description": "A low-carb viral sensation using fluffy egg-white 'cloud bread' as a zero-carb pizza crust. It took foodie news by storm in April 2026.",
+    "originalDish": "Pizza",
+    "socialVolume": 18200,
+    "searchVolume": 65400,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Moong dal chilla pizza with paneer toppings and makhani sauce base",
+    "createdAt": "2026-04-07T23:24:37.943Z"
+  },
+  {
+    "id": 20,
+    "name": "Sourdough Croissant",
+    "description": "A hybrid pastry combining the tang of sourdough starter with the flaky layers of a classic croissant, growing rapidly in baking news throughout March 2026.",
+    "originalDish": "Croissant",
+    "socialVolume": 12400,
+    "searchVolume": 49200,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Fermented dosa-batter flaky layered paratha with butter",
+    "createdAt": "2026-04-07T23:24:37.943Z"
+  },
+  {
+    "id": 21,
+    "name": "Ube Tarts",
+    "description": "Vibrant purple yam incorporated into delicate French-style fruit tarts, which became a highly searched dessert on food news outlets in March 2026.",
+    "originalDish": "Tarts",
+    "socialVolume": 21500,
+    "searchVolume": 76000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Purple yam (kand) halwa tart with a shortcrust pastry base and rabri drizzle",
+    "createdAt": "2026-04-07T23:24:37.945Z"
+  },
+  {
+    "id": 22,
+    "name": "Mushroom Coffee",
+    "description": "Adaptogenic coffee blends using Lion's Mane and Chaga mushrooms, seeing a massive surge as a wellness trend in April 2026.",
+    "originalDish": "Coffee",
+    "socialVolume": 35000,
+    "searchVolume": 112000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Ashwagandha and chicory blend filter coffee",
+    "createdAt": "2026-04-07T23:24:37.946Z"
+  },
+  {
+    "id": 23,
+    "name": "Gochujang Pasta",
+    "description": "Fusing creamy Italian pasta techniques with the spicy, umami depth of Korean gochujang paste, trending heavily in April 2026.",
+    "originalDish": "Pasta",
+    "socialVolume": 28900,
+    "searchVolume": 85000,
+    "isEmerging": true,
+    "source": "GDELT News Trend Pipeline",
+    "indianAlternative": "Spicy schezwan-paneer creamy macaroni",
+    "createdAt": "2026-04-07T23:24:37.947Z"
   }
 ]

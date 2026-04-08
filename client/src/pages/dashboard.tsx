@@ -70,7 +70,7 @@ export default function Dashboard() {
             </div>
             <h3 className="font-display font-semibold text-xl">No trends detected yet</h3>
             <p className="text-muted-foreground max-w-sm">
-              Head over to the Analysis Pipeline to run a new extraction job across social platforms.
+              No culinary trends have been detected yet. Check back soon for the latest insights.
             </p>
           </div>
         ) : (

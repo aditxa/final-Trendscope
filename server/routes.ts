@@ -7,6 +7,7 @@ import { ingestRedditTrendsFromFiles } from "./pipelines/reddit";
 import { ingestGdeltMockTrends } from "./pipelines/gdelt";
 import type { InsertTrend } from "@shared/schema";
 import { generateRecipe } from "./services/gemini";
+import { fetchGoogleTrendsInterest } from "./services/google-trends";
 
 const CURATED_TRENDS: InsertTrend[] = [
   {
@@ -208,6 +209,10 @@ export async function registerRoutes(
     }
   });
 
+  // In-memory cache for Google Trends results (avoids rate-limiting)
+  const trendsCache = new Map<string, { data: any; fetchedAt: number }>();
+  const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
+
   app.get(api.trends.googleInterest.path, async (req, res) => {
     try {
       const name =
@@ -219,52 +224,40 @@ export async function registerRoutes(
         name ??
         (await storage.getTrends().then((t) => (t[0] ? t[0].name : "")));
 
-      const baseSeries: Record<string, number[]> = {
-        'Mushroom-Based "Functional" Coffee': [32, 45, 58, 71, 80, 83, 86, 90],
-        "Tandoori Momos Pasta": [40, 52, 60, 68, 74, 79, 81, 84],
-        "Pistachio-Kunafa Stuffed Medjool Dates": [
-          18, 26, 35, 49, 63, 72, 78, 82,
-        ],
-        "Millet-Coconut Frozen Desserts": [14, 22, 29, 41, 55, 61, 67, 73],
-        "Desi Taco Fusion (Bajra Roti Base)": [20, 33, 47, 59, 66, 72, 77, 81],
-        "Makhani Ramen": [25, 37, 48, 56, 62, 68, 71, 75],
-        "Ube-Style Purple Sweet Potato Desserts": [
-          12, 19, 27, 35, 44, 52, 59, 66,
-        ],
-        'Probiotic "Achaar" Bowls': [10, 18, 26, 34, 43, 51, 58, 64],
-        "Kombucha-Chai Cocktails": [16, 24, 33, 42, 50, 57, 63, 69],
-        "Doctor's Ultimate Bread": [8, 15, 24, 38, 52, 64, 73, 80],
-        "Japanese Cheesecake": [5, 12, 20, 34, 55, 72, 85, 95],
-        "Paratha Burger": [10, 18, 28, 40, 53, 62, 70, 76],
-        "Smash Burger Tacos": [6, 14, 25, 42, 60, 74, 82, 90],
-        "Cottage Cheese Ice Cream": [12, 20, 32, 45, 56, 64, 71, 78],
-        "Dubai Chocolate Bar": [8, 18, 35, 55, 70, 82, 90, 96],
-        "Birria Ramen": [15, 24, 34, 46, 55, 62, 68, 73],
-        "Protein Cookie Dough": [4, 10, 18, 28, 40, 50, 58, 65],
-      };
+      if (!targetName) {
+        return res.status(400).json({ message: "No trend name provided" });
+      }
 
-      const dates = [
-        "2026-01-01",
-        "2026-01-08",
-        "2026-01-15",
-        "2026-01-22",
-        "2026-01-29",
-        "2026-02-05",
-        "2026-02-12",
-        "2026-02-19",
-      ];
+      // Check cache
+      const cached = trendsCache.get(targetName);
+      if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
+        return res.json(cached.data);
+      }
 
-      const series =
-        (targetName && baseSeries[targetName]) ??
-        baseSeries['Mushroom-Based "Functional" Coffee'];
+      // 1. Resolve to the Ancestor "Original Dish" instead of the complex targetName
+      const allTrends = await storage.getTrends();
+      const matchedTrend = allTrends.find((t) => t.name === targetName);
+      const searchKeyword = matchedTrend?.originalDish || targetName;
 
-      const points = dates.map((date, idx) => ({
-        date,
-        value: series[idx] ?? series[series.length - 1],
-      }));
+      // 2. Execute Google Trends API natively on the ancestor
+      let result;
+      try {
+        console.log(`Google Trends: Unconditionally querying ancestor "${searchKeyword}" for trend "${targetName}"...`);
+        const targetResult = await fetchGoogleTrendsInterest(searchKeyword);
+        
+        // 3. Re-inject the original display name so the UI labels stay correct
+        result = { ...targetResult, name: targetName };
+      } catch (err) {
+        console.error(`Google Trends failed for "${searchKeyword}":`, err);
+        throw err;
+      }
 
-      res.json({ name: targetName, points });
+      // Cache the result under the trend name
+      trendsCache.set(targetName, { data: result, fetchedAt: Date.now() });
+
+      res.json(result);
     } catch (err) {
+      console.error("Google Trends fetch error:", err);
       res.status(500).json({ message: "Failed to load Google interest data" });
     }
   });
@@ -273,73 +266,59 @@ export async function registerRoutes(
     try {
       const input = api.trends.runPipeline.input.parse(req.body);
 
+      // Establish SSE Headers
+      res.setHeader("Content-Type", "text/event-stream");
+      res.setHeader("Cache-Control", "no-cache");
+      res.setHeader("Connection", "keep-alive");
+      res.flushHeaders(); 
+
+      const onProgress = (step: number) => {
+        res.write(`data: ${JSON.stringify({ step })}\n\n`);
+      };
+
       if (input.source.toLowerCase() === "reddit") {
         try {
           const newTrends = await ingestRedditTrendsFromFiles();
-
-          if (newTrends.length > 0) {
-            return res.status(200).json({
-              message: `Reddit pipeline completed successfully. Ingested ${newTrends.length} trend(s).`,
-              newTrends,
-            });
-          }
+          res.write(`data: ${JSON.stringify({ done: true, newTrends, message: newTrends.length > 0 ? "Reddit pipeline completed successfully. Ingested " + newTrends.length + " trend(s)." : "No organic trends detected in this window." })}\n\n`);
+          return res.end();
         } catch (pipelineError) {
-          console.error(
-            "Reddit ingestion failed, falling back to synthetic data:",
-            pipelineError,
-          );
+          console.error("Reddit ingestion failed:", pipelineError);
+          res.write(`data: ${JSON.stringify({ done: true, newTrends: [], message: "Pipeline execution failed or no organic trends detected." })}\n\n`);
+          return res.end();
         }
       }
 
       if (input.source.toLowerCase() === "gdelt") {
         try {
-          const newTrends = await ingestGdeltMockTrends();
-
-          if (newTrends.length > 0) {
-            return res.status(200).json({
-              message: `GDELT pipeline completed successfully. Discovered ${newTrends.length} trend(s) from global news articles.`,
-              newTrends,
-            });
-          }
+          const newTrends = await ingestGdeltMockTrends(onProgress);
+          res.write(`data: ${JSON.stringify({ done: true, newTrends, message: newTrends.length > 0 ? "GDELT pipeline completed successfully. Discovered " + newTrends.length + " trend(s) from global news." : "No organic trends detected in this window." })}\n\n`);
+          return res.end();
         } catch (pipelineError) {
-          console.error(
-            "GDELT ingestion failed, falling back to synthetic data:",
-            pipelineError,
-          );
+          console.error("GDELT ingestion failed:", pipelineError);
+          res.write(`data: ${JSON.stringify({ done: true, newTrends: [], message: "Pipeline execution failed or no organic trends detected." })}\n\n`);
+          return res.end();
         }
       }
 
-      const allTrends = await storage.getTrends();
-      const fallbackName = "Desi Taco Fusion (Bajra Roti Base)";
-      const existing =
-        allTrends.find((t) => t.name === fallbackName) ?? null;
+      // If source falls through for some unknown reason
+      res.write(`data: ${JSON.stringify({ done: true, newTrends: [], message: "Unknown data source specified." })}\n\n`);
+      return res.end();
 
-      const mockedNewTrend =
-        existing ??
-        (await storage.createTrend({
-          name: fallbackName,
-          originalDish: "Tacos",
-          description:
-            "Mexican tacos where the tortilla is replaced by mini Bajra or Jowar rotis, stuffed with paneer bhurji and mint chutney.",
-          socialVolume: Math.floor(Math.random() * 20000) + 8000,
-          searchVolume: Math.floor(Math.random() * 50000) + 20000,
-          isEmerging: true,
-          source: input.source,
-          indianAlternative: "Bajra roti, paneer bhurji, pudina chutney",
-        }));
-
-      res.status(200).json({
-        message: "Pipeline completed successfully.",
-        newTrends: [mockedNewTrend],
-      });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({
-          message: err.errors[0].message,
-          field: err.errors[0].path.join('.'),
-        });
+        if (!res.headersSent) {
+          return res.status(400).json({ message: err.errors[0].message });
+        } else {
+          res.write(`data: ${JSON.stringify({ error: err.errors[0].message })}\n\n`);
+          return res.end();
+        }
       }
-      res.status(500).json({ message: "Pipeline failed" });
+      if (!res.headersSent) {
+        res.status(500).json({ message: "Pipeline failed" });
+      } else {
+        res.write(`data: ${JSON.stringify({ error: "Pipeline failed due to internal error." })}\n\n`);
+        return res.end();
+      }
     }
   });
 

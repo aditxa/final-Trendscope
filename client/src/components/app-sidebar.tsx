@@ -1,10 +1,6 @@
 import { 
-  Activity, 
   BarChart3, 
-  ChefHat, 
-  Database, 
-  Globe,
-  Newspaper
+  ChefHat
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import {
@@ -21,7 +17,6 @@ import {
 
 const mainNavItems = [
   { title: "Dashboard", url: "/", icon: BarChart3 },
-  { title: "Analysis Pipeline", url: "/pipeline", icon: Activity },
 ];
 
 export function AppSidebar() {
@@ -73,43 +68,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className="mt-8">
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 mb-2">
-            Data Sources
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <div className="space-y-3 px-3">
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Database size={14} />
-                  <span>Reddit Data</span>
-                </div>
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Database size={14} />
-                  <span>Discord Arch.</span>
-                </div>
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Globe size={14} />
-                  <span>Google Trends</span>
-                </div>
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Newspaper size={14} />
-                  <span>GDELT News</span>
-                </div>
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </div>
-            </div>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   );
